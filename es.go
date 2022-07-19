@@ -92,7 +92,13 @@ func (e *ES) Search(index string, query []byte) (scrollID string, total int, hit
 	}
 
 	scrollID = r["_scroll_id"].(string)
-	total = int(r["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"].(float64))
+	switch r["hits"].(map[string]interface{})["total"].(type) {
+	case float64:
+		total = int(r["hits"].(map[string]interface{})["total"].(float64))
+	case map[string]interface{}:
+		total = int(r["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"].(float64))
+	default:
+	}
 	hits = r["hits"].(map[string]interface{})["hits"].([]interface{})
 	return
 }

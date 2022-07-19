@@ -16,3 +16,4 @@
 
 sync-es-zinc
 .env
+*.json
