@@ -32,12 +32,10 @@ func main() {
 	fmt.Printf("%s\n", strings.Repeat("=", 36))
 
 	// read from ES
-	scrollID, total, hits, err := es.Search(Config.ESIndexName, []byte(`{"query": {"match_all": {}}}`))
+	scrollID, total, hits, err := es.Search(Config.ESIndexName, []byte(`{"query": {"match_all": {}}, "size": 1000}`))
 	if err != nil {
 		log.Fatal(err)
 	}
-	n := len(hits)
-	fmt.Println(total, len(hits), n)
 	for _, hit := range hits {
 		hit := hit.(map[string]interface{})
 		source := hit["_source"].(map[string]interface{})
@@ -53,6 +51,10 @@ func main() {
 		fmt.Println("zinc, id", id, err)
 	}
 
+	n := len(hits)
+	fmt.Println(total, len(hits), n)
+
+	// scroll
 	for {
 		scrollID, hits, err = es.Scroll(scrollID)
 		if err != nil {
@@ -61,8 +63,6 @@ func main() {
 		if len(hits) == 0 {
 			break
 		}
-		n += len(hits)
-		fmt.Println(total, len(hits), n)
 		for _, hit := range hits {
 			hit := hit.(map[string]interface{})
 			source := hit["_source"].(map[string]interface{})
@@ -77,5 +77,8 @@ func main() {
 			id, err := zinc.IndexDocument(Config.ZincIndexName, source)
 			fmt.Println("zinc, id", id, err)
 		}
+
+		n += len(hits)
+		fmt.Println(total, len(hits), n)
 	}
 }
