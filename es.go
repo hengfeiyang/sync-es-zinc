@@ -18,9 +18,11 @@ type ES struct {
 	client *elasticsearch.Client
 }
 
-func NewES(servers []string) (*ES, error) {
+func NewES(servers []string, user, pass string) (*ES, error) {
 	cfg := elasticsearch.Config{
 		Addresses: servers,
+		Username:  user,
+		Password:  pass,
 		Transport: &http.Transport{
 			MaxIdleConnsPerHost:   10,
 			ResponseHeaderTimeout: time.Second,
