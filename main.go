@@ -57,8 +57,9 @@ func main() {
 
 	// scroll
 	for {
+		var id string
 		for i := 0; i < 3; i++ {
-			scrollID, hits, err = es.Scroll(scrollID)
+			id, hits, err = es.Scroll(scrollID)
 			if err != nil {
 				log.Println(err)
 				time.Sleep(time.Second)
@@ -71,6 +72,9 @@ func main() {
 		if len(hits) == 0 {
 			break
 		}
+
+		scrollID = id
+
 		for _, hit := range hits {
 			hit := hit.(map[string]interface{})
 			source := hit["_source"].(map[string]interface{})
