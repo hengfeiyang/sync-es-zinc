@@ -61,7 +61,7 @@ func (e *ES) Search(index string, query []byte) (scrollID string, total int, hit
 		e.client.Search.WithIndex(index),
 		e.client.Search.WithBody(buf),
 		e.client.Search.WithTrackTotalHits(true),
-		e.client.Search.WithScroll(time.Second*60),
+		e.client.Search.WithScroll(time.Minute*10),
 		e.client.Search.WithPretty(),
 	)
 	if err != nil {
@@ -105,7 +105,7 @@ func (e *ES) Search(index string, query []byte) (scrollID string, total int, hit
 
 func (e *ES) Scroll(id string) (scrollID string, hits []interface{}, err error) {
 	res, err := e.client.Scroll(
-		e.client.Scroll.WithScroll(time.Second*60),
+		e.client.Scroll.WithScroll(time.Minute*10),
 		e.client.Scroll.WithScrollID(id),
 		e.client.Scroll.WithPretty(),
 	)

@@ -49,16 +49,18 @@ func main() {
 
 		// write to Zinc
 		id, err := zinc.IndexDocument(Config.ZincIndexName, source)
-		fmt.Println("zinc, id", id, err)
+		if err != nil {
+			fmt.Println("zinc, id", id, err)
+		}
 	}
 
 	n := len(hits)
-	fmt.Println(total, len(hits), n)
+	log.Println(total, len(hits), n)
 
 	// scroll
 	for {
 		var id string
-		for i := 0; i < 3; i++ {
+		for i := 0; i < Config.SyncRetries; i++ {
 			id, hits, err = es.Scroll(scrollID)
 			if err != nil {
 				log.Println(err)
@@ -87,10 +89,16 @@ func main() {
 
 			// write to Zinc
 			id, err := zinc.IndexDocument(Config.ZincIndexName, source)
-			fmt.Println("zinc, id", id, err)
+			if err != nil {
+				fmt.Println("zinc, id", id, err)
+			}
 		}
 
 		n += len(hits)
-		fmt.Println(total, len(hits), n)
+		log.Println(total, len(hits), n)
+
+		if Config.SyncMaxRecords > 0 && n > Config.SyncMaxRecords {
+			break
+		}
 	}
 }

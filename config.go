@@ -26,14 +26,16 @@ import (
 )
 
 type config struct {
-	ZincHost      string `env:"ZINC_HOST,default=localhost:4080"`
-	ZincUser      string `env:"ZINC_USER,default=admin"`
-	ZincPassword  string `env:"ZINC_PASSWORD,default=Complexpass#123"`
-	ZincIndexName string `env:"ZINC_INDEX_NAME,default=myindex"`
-	ESHost        string `env:"ES_HOST,default=localhost:9200"`
-	ESUser        string `env:"ES_USER,default=elastic"`
-	ESPassword    string `env:"ES_PASSWORD,default="`
-	ESIndexName   string `env:"ES_INDEX_NAME,default=myindex"`
+	ZincHost       string `env:"ZINC_HOST,default=localhost:4080"`
+	ZincUser       string `env:"ZINC_USER,default=admin"`
+	ZincPassword   string `env:"ZINC_PASSWORD,default=Complexpass#123"`
+	ZincIndexName  string `env:"ZINC_INDEX_NAME,default=myindex"`
+	ESHost         string `env:"ES_HOST,default=localhost:9200"`
+	ESUser         string `env:"ES_USER,default=elastic"`
+	ESPassword     string `env:"ES_PASSWORD,default="`
+	ESIndexName    string `env:"ES_INDEX_NAME,default=myindex"`
+	SyncMaxRecords int    `env:"SYNC_MAX_RECORDS,default=10000"`
+	SyncRetries    int    `env:"SYNC_RETRIES,default=3"`
 }
 
 var Config = new(config)
