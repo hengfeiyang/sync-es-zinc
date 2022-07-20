@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"time"
 )
 
 func main() {
@@ -56,7 +57,14 @@ func main() {
 
 	// scroll
 	for {
-		scrollID, hits, err = es.Scroll(scrollID)
+		for i := 0; i < 3; i++ {
+			scrollID, hits, err = es.Scroll(scrollID)
+			if err != nil {
+				log.Println(err)
+				time.Sleep(time.Second)
+				continue
+			}
+		}
 		if err != nil {
 			log.Fatal(err)
 		}
