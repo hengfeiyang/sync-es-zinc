@@ -25,8 +25,8 @@ func NewES(servers []string, user, pass string) (*ES, error) {
 		Password:  pass,
 		Transport: &http.Transport{
 			MaxIdleConnsPerHost:   10,
-			ResponseHeaderTimeout: time.Second,
-			DialContext:           (&net.Dialer{Timeout: time.Second}).DialContext,
+			ResponseHeaderTimeout: time.Second * 10,
+			DialContext:           (&net.Dialer{Timeout: time.Second * 10}).DialContext,
 			TLSClientConfig: &tls.Config{
 				MaxVersion:         tls.VersionTLS11,
 				InsecureSkipVerify: true,
