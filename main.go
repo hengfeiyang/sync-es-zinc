@@ -67,6 +67,7 @@ func main() {
 				time.Sleep(time.Second)
 				continue
 			}
+			break
 		}
 		if err != nil {
 			log.Fatal(err)
